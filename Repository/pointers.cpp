@@ -16,3 +16,12 @@ int main() {
     cout << "New value of x: " << x << endl; // Output: 20
     return 0;
 }
+
+int sum(int a, int v){
+
+ int suma=(a+v);
+
+
+    return suma;
+}
+//ahora? ya le di a save
