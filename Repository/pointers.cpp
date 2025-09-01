@@ -24,4 +24,11 @@ int sum(int a, int v){
 
     return suma;
 }
-//ahora? ya le di a save
+ int resta(int j, int  k ){
+
+int resta= j-k;
+return resta;
+
+
+ }
+//vamos a ver
