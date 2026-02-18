@@ -11,7 +11,7 @@ public:
     Vector() {
         capacity = 10;
         storage = new int[capacity];
-        sz = 0;
+        sz = 1;
     }
     unsigned int size() {
         return sz;
