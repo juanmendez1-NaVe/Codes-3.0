@@ -47,25 +47,7 @@ public:
         sz++;
     }
 
-    void erase(unsigned int pos){
-        assert(pos<sz && sz != 0);
-        for(unsigned int i=pos; i<sz; i++){
-            storage[i]=storage[i+1];
-        }
-        sz--;
-    }
-
-void rangeErase(unsigned int from, unsigned int to) {
-    assert(sz > 0 && from < to && to <= sz);
-    unsigned int range = to - from;
-    for (unsigned int i = from; i < sz - range; i++){
-        storage[i] = storage[i + range];
-    }
-
-    sz -= range;
-}
-
-void push_front(const T& elem){
+    void push_front(const T& elem){
         resize();
         for(unsigned int i=sz; i>0;i--){
             storage[i]= storage[i-1];
@@ -154,6 +136,8 @@ private:
             cap = newCapacity;
         }
     }
+    
+
 public:
     void print() const {
         cout<<"{";
@@ -162,7 +146,242 @@ public:
         }
         cout << "}" << endl;
     }
+    void clear(){
+    sz=0;
+}
 
+void erase(unsigned int pos){
+        assert(pos<sz && sz != 0);
+        for(unsigned int i=pos; i<sz; i++){
+            storage[i]=storage[i+1];
+        }
+        sz--;
+    }
+
+    void rangeErase(unsigned int from, unsigned int to) {
+    assert(sz > 0 && from < to && to <= sz);
+    unsigned int range = to - from;
+    for (unsigned int i = from; i < sz - range; i++){
+        storage[i] = storage[i + range];
+    }
+
+    sz -= range;
+}
+
+
+
+bool contains(const T &elem) const {
+    for (unsigned int i = 0; i < sz; i++) {
+        if (storage[i] == elem) {
+            cout<<"1"<<endl;
+            return true; 
+        }
+    }
+    cout<<"0"<<endl;
+    return false; 
+}
+
+int find(const T &elem) const{
+     for (unsigned int i = 0; i < sz; i++) {
+        if (storage[i] == elem) {
+            //cout<<"index"i<<endl;
+            return i; 
+        }
+    }
+    cout<<"ou ou stinky"<<endl;
+    return -1;
+}
+
+void remove(const T &elem){
+    int pos = Find(elem); 
+    if (pos != -1) { 
+        erase(pos);   
+    }
+    
+}
+
+ void replace(const T &oldVal, const T &newVal) {
+    int pos = find(oldVal);  
+    if (pos != -1) {
+        storage[pos] = newVal;  
+    }
+}
+
+    void remove_all(const T& elem) {
+    unsigned int w = 0; 
+    for (unsigned int i = 0; i < sz; i++) {
+        if (storage[i] != elem) {
+            storage[w] = storage[i];
+            w++;
+        }
+    }
+    sz = w;
+}
+
+ void replace_all(const T &oldVal, const T &newVal){ 
+    for (unsigned int i = 0; i < sz; i++) {
+        if (storage[i] == oldVal){
+            storage[i] =newVal;
+        }
+    }
+
+
+}
+
+int count(const T &elem) const{
+    unsigned int w = 0; 
+    for (unsigned int i = 0; i < sz; i++) {
+        if (storage[i] == elem) {
+            w++;
+        }
+    }
+    cout<<w<<endl;
+    return w;
+}
+
+Vector<int> indices_of(const T &elem) const{
+    Vector<int> indices;  
+    for (unsigned int i = 0; i < sz; i++) {
+        if (storage[i] == elem) {
+        indices.push_back(i);  
+        }
+    }
+    indices.print();
+    return indices;
+
+}
+
+ void swap(unsigned int i, unsigned int j){
+    assert(i < sz && j < sz);
+    if (i == j) return;
+    T tmp = storage[i];  
+    storage[i]= storage[j]; 
+    storage[j]= tmp;      
+}
+
+    void reverse(){
+    if (sz <= 1) return; 
+    unsigned int i= 0;
+    unsigned int j= sz - 1;
+    while (i < j) {
+        swap(i, j); 
+        i++;
+        j--;
+    }
+}
+ void Simplerotate_left(unsigned int k){
+    if (sz == 0) return;
+    k = k % sz;
+    if (k == 0) return;
+    T* temp = new T[sz];
+    for (unsigned int i = 0; i < sz; i++){
+        unsigned int newPos = (i + (sz - k)) % sz;
+        temp[newPos] = storage[i];
+    }
+    for (unsigned int i = 0; i < sz; i++){
+        storage[i] = temp[i];
+    }
+    delete[] temp;
+}
+
+public:
+    void rotate_left(unsigned int k) {
+        if (sz == 0) return;
+        k = k % sz;
+        if (k == 0) return;
+        RangeReverse(0, k - 1);
+        RangeReverse(k, sz - 1);
+        RangeReverse(0, sz - 1);
+    }
+
+    void rotate_right(unsigned int k) {
+        if (sz == 0) return;
+        k = k % sz;
+        rotate_left(sz - k);
+    }
+
+   void sort(){
+    if (sz > 1){
+        int option = 0;
+        cout << "Elija el algoritmo de ordenamiento:\n1. MergeSort\n2. QuickSort\nSeleccion: ";
+        cin >> option; 
+
+        if (option == 1) {
+            mergeSort(0, sz - 1);
+            cout << "Ordenado con MergeSort." << endl;
+        } 
+        else if (option == 2) {
+            quickSort(0, sz - 1);
+            cout << "Ordenado con QuickSort." << endl;
+        }
+        else {
+            cout << "Opcion no valida." << endl;
+        }
+    }
+}
+    void quickSort(int low, int high) {
+        if (low < high) {
+            int PI = partition(low, high);
+            quickSort(low, PI - 1);
+            quickSort(PI + 1, high);
+        }
+    }
+
+    void mergeSort(int left, int right){
+        if (left < right) {
+            int mid = left + (right - left) / 2;
+            mergeSort(left, mid);
+            mergeSort(mid + 1, right);
+            merge(left, mid, right);
+        }
+    }
+
+private: 
+    void RangeReverse(unsigned int from, unsigned int to){
+        if (sz == 0 || from >= to) return;
+        unsigned int i = from;
+        unsigned int j = to;
+        while (i < j) {
+            swap(i, j);
+            i++;
+            j--;
+        }
+    }
+
+    int partition(int low, int high) {
+        T pivot = storage[high]; // Eliminé la palabra "pivote" extra que tenías
+        int i = low - 1;
+        for (int j = low; j < high; j++) {
+            if (storage[j] < pivot) {
+                i++;
+                swap(i, j);
+            }
+        }
+        swap(i + 1, high);
+        return i + 1;
+    }
+
+    void merge(int left, int mid, int right) {
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
+        T* L = new T[n1];
+        T* R = new T[n2];
+        for (int i = 0; i < n1; i++) L[i] = storage[left + i];
+        for (int j = 0; j < n2; j++) R[j] = storage[mid + 1 + j];
+        int i = 0, j = 0, k = left;
+        while (i < n1 && j < n2) {
+            if (L[i] <= R[j]) { storage[k] = L[i]; i++; }
+            else { storage[k] = R[j]; j++; }
+            k++;
+        }
+        while (i < n1) { storage[k] = L[i]; i++; k++; }
+        while (j < n2) { storage[k] = R[j]; j++; k++; }
+        delete[] L;
+        delete[] R;
+    }
+
+    
 };
+
 
 
