@@ -125,7 +125,6 @@ public:
 private:
     void resize() {
         if(sz == cap){
-            cout<<"real resize"<<endl;
             unsigned int newCapacity = cap*1.5;
             T* newStorage = new T[newCapacity];
             for(unsigned int i=0;i < sz; i++){
@@ -139,15 +138,13 @@ private:
     
 
 public:
-    void print() const {
-        cout<<"{";
-        for(unsigned int i=0;i <sz; i++){
-            cout << storage[i] << " ";
-        }
-        cout << "}" << endl;
+   void print() const {
+    std::cout << "{ ";
+    for (unsigned int i = 0; i < sz; i++) {
+        std::cout << storage[i];
+        if (i < sz - 1) std::cout << " ";
     }
-    void clear(){
-    sz=0;
+    std::cout << " }" << std::endl;
 }
 
 void erase(unsigned int pos){
@@ -193,7 +190,7 @@ int find(const T &elem) const{
 }
 
 void remove(const T &elem){
-    int pos = Find(elem); 
+    int pos = find(elem); 
     if (pos != -1) { 
         erase(pos);   
     }
@@ -221,7 +218,7 @@ void remove(const T &elem){
  void replace_all(const T &oldVal, const T &newVal){ 
     for (unsigned int i = 0; i < sz; i++) {
         if (storage[i] == oldVal){
-            storage[i] =newVal;
+            storage[i]==newVal;
         }
     }
 
@@ -269,6 +266,7 @@ Vector<int> indices_of(const T &elem) const{
         j--;
     }
 }
+
  void Simplerotate_left(unsigned int k){
     if (sz == 0) return;
     k = k % sz;
@@ -335,7 +333,31 @@ public:
             merge(left, mid, right);
         }
     }
-
+    void append(const Vector<T> &other){
+    for (unsigned int i = 0; i < other.size(); i++) {
+        push_back(other[i]);
+    }
+}
+Vector<T> slice(unsigned int start, unsigned int end) const{
+    assert(start <= end && end <= sz);
+    Vector<T> result;
+    for (unsigned int i = start; i < end; i++){
+    result.push_back(storage[i]);
+    }
+    return result;
+}
+Vector<T>& operator=(const Vector<T> &other){
+    if (this != &other){ 
+    delete[] storage;
+    sz = other.sz;
+    cap = other.cap;
+    storage = new T[cap];
+    for (unsigned int i = 0; i < sz; i++){
+    storage[i] = other.storage[i];
+    }
+}
+return *this; 
+}
 private: 
     void RangeReverse(unsigned int from, unsigned int to){
         if (sz == 0 || from >= to) return;
@@ -349,7 +371,7 @@ private:
     }
 
     int partition(int low, int high) {
-        T pivot = storage[high]; // Eliminé la palabra "pivote" extra que tenías
+        T pivot = storage[high]; // pivot
         int i = low - 1;
         for (int j = low; j < high; j++) {
             if (storage[j] < pivot) {
@@ -380,8 +402,71 @@ private:
         delete[] R;
     }
 
+    public:
     
+    bool any(bool (*p)(const T&)) const {
+    for (unsigned int i = 0; i < sz; i++) {
+        if (p(storage[i])) return true; 
+    }
+    return false;
+}
+
+bool all(bool (*p)(const T&)) const {
+    for (unsigned int i = 0; i < sz; i++) {
+        if (!p(storage[i])) return false; 
+    }
+    return true; 
+}
+
+bool none(bool (*p)(const T&)) const{
+    return !any(p); 
+}
+
+Vector<T> filter(bool (*p)(const T&)) const {
+    Vector<T> result;
+    for (unsigned int i = 0; i < sz; i++) {
+        if (p(storage[i])) { 
+            result.push_back(storage[i]); 
+        }
+    }
+    return result; 
+}
+
+
+template <typename Function> 
+auto map(Function f) const {
+    using R = decltype(f(std::declval<T>())); 
+    
+    Vector<R> result; 
+    for (unsigned int i = 0; i < sz; i++) {
+        result.push_back(f(storage[i])); 
+    }
+    return result;
+}
+
+
+template <typename Function>
+void for_each(Function f) {
+    for (unsigned int i = 0; i < sz; i++) {
+        f(storage[i]); 
+    }
+}
+
+
+using iterator = T*;
+using const_iterator = const T*;
+
+
+iterator begin() { return storage; }
+const_iterator begin() const { return storage; }
+
+
+iterator end() { return storage + sz; }
+const_iterator end() const { return storage + sz; }
+
 };
+
+
 
 
 
