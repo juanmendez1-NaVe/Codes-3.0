@@ -1,0 +1,125 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Paquetes de Idioma y Codificación ---
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, es-tabla]{babel}
+\usepackage[T1]{fontenc}
+
+% --- Paquetes Matemáticos y de Símbolos ---
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+% --- Formato y Estética ---
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{titlesec}
+
+% Configuración de márgenes
+\geometry{
+    top=2.5cm,
+    bottom=2.5cm,
+    left=3cm,
+    right=3cm
+}
+
+% Estilo de títulos
+\titleformat{\section}{\large\bfseries\color{blue!70!black}}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+
+% --- Información del Documento ---
+\title{
+    \vspace{-2cm}
+    \rule{\linewidth}{0.5mm} \\
+    \vspace{0.4cm}
+    \textbf{Informe Técnico: Vulnerabilidad Electrónica de la Sonda Voyager 1 ante Radiación Interestelar} \\
+    \rule{\linewidth}{0.5mm}
+}
+\author{Grupo de Juan Jose Mendez y Camila Vallejo}
+\date{10 de mayo de 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Presentación}
+El presente informe tiene como propósito evaluar el impacto de la radiación ionizante de alta energía, específicamente los Rayos Cósmicos Galácticos (GCR), sobre la integridad de los sistemas de cómputo de la sonda Voyager 1. Se busca cuantificar la eficacia del blindaje actual y determinar los riesgos de fallos lógicos inducidos por fenómenos de interacción radiación-materia en el espacio profundo.
+
+\section{Metodología}
+Para la recolección y procesamiento de datos, se han empleado los siguientes métodos:
+\begin{itemize}
+    \item \textbf{Modelado Matemático:} Aplicación de la ley de atenuación exponencial de Beer-Lambert ($I = I_0 e^{-\mu x}$) para determinar la capacidad de absorción del blindaje de la sonda.
+    \item \textbf{Análisis de Parámetros Físicos:} Utilización de constantes físicas estándar para el Aluminio (Al) a energías de $1 \text{ MeV}$ y caracterización de la radiación interestelar según datos de la misión Voyager.
+    \item \textbf{Simulación de Probabilidades:} Cálculo de la fracción de transmisión de fotones para evaluar la exposición directa de los circuitos de silicio.
+\end{itemize}
+
+\section{Descripción}
+La sonda Voyager 1 se encuentra actualmente en el medio interestelar, un entorno donde la protección de la heliósfera solar es mínima. En esta región, la sonda es bombardeada constantemente por fotones de rayos gamma y partículas cargadas de alta frecuencia. La estructura de la sonda cuenta con un blindaje de aluminio de aproximadamente $2.5 \text{ mm}$. Históricamente, las computadoras de a bordo han presentado anomalías menores, conocidas como ``Single Event Upsets'' (SEU), que coinciden con periodos de alta actividad energética detectada por sus sensores.
+
+\section{Análisis}
+Al relacionar los datos teóricos con la descripción física, se observan los siguientes hallazgos:
+
+\subsection{Ineficacia del Blindaje}
+Con un espesor de $x = 0.0025 \text{ m}$ y un coeficiente de atenuación $\mu \approx 16.5 \text{ m}^{-1}$, la probabilidad de que un fotón atraviese el blindaje sin interactuar se calcula mediante la relación de intensidad transmitida:
+\begin{equation}
+    P(x) = \frac{I(x)}{I_0} = e^{-(16.5 \text{ m}^{-1})(0.0025 \text{ m})} \approx 0.959
+\end{equation}
+Esto implica que el blindaje es físicamente transparente para el \textbf{95.9\%} de la radiación gamma de alta energía ($1 \text{ MeV}$).
+
+\subsection{Mecanismos de Interacción}
+El \textbf{4.1\%} de la radiación que interactúa genera principalmente \textbf{Dispersión Compton}. Este fenómeno libera electrones secundarios con energía suficiente para penetrar en las capas lógicas de los microprocesadores de silicio.
+
+\subsection{Relación Energía-Daño}
+Considerando que la energía del fotón es $E = hf$, la alta frecuencia de los rayos cósmicos garantiza que cada interacción deposite una dosis absorbida ($D = E/m$) capaz de alterar estados binarios en la memoria RAM, explicando las corrupciones de datos en la telemetría.
+
+\section{Conclusiones}
+\begin{itemize}
+    \item Se confirma una vulnerabilidad radiológica crítica en la sonda Voyager 1.
+    \item La baja probabilidad de atenuación ($< 5\%$) delega la integridad de la misión a la redundancia de hardware y no a la protección física.
+    \item La radiación ionizante es el factor determinante en la degradación acumulativa de los componentes de estado sólido.
+\end{itemize}
+
+\section{Recomendaciones}
+\begin{enumerate}
+    \item \textbf{Rediseño de Materiales:} Implementar blindajes de materiales con mayor número atómico ($Z$) o polímeros ricos en hidrógeno.
+    \item \textbf{Blindaje Activo:} Evaluar sistemas de deflexión magnética para misiones futuras.
+    \item \textbf{Endurecimiento Lógico:} Mantener arquitecturas de Triple Redundancia Modular (TMR) para mitigar fallos por cambios de bit.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{voyager_mission} 
+NASA Jet Propulsion Laboratory (JPL).
+\textit{Voyager: The Interstellar Mission}. 
+Disponible en: \texttt{https://voyager.jpl.nasa.gov}
+(Accedido el 10 de mayo de 2026).
+
+\bibitem{knoll} 
+Knoll, G. F. 
+\textit{Radiation Detection and Measurement}. 
+4th Edition. John Wiley \& Sons, 2010. 
+(Fuente para los coeficientes de atenuación $\mu$ y mecanismos de interacción Compton).
+
+\bibitem{nasa_rad} 
+National Aeronautics and Space Administration (NASA). 
+\textit{Space Radiation and its Effects on Robotic Spacecraft}. 
+NASA Technical Reports Server (NTRS), 2018. 
+(Análisis de Single Event Upsets en electrónica espacial).
+
+\bibitem{nist_xcom} 
+Berger, M.J., Hubbell, J.H., et al. 
+\textit{XCOM: Photon Cross Sections Database}. 
+National Institute of Standards and Technology (NIST). 
+Disponible en: \texttt{https://www.nist.gov/pml/xcom-photon-cross-sections-database}
+(Base de datos para la interacción de rayos gamma con aluminio).
+
+\bibitem{tipler} 
+Tipler, P. A., \& Llewellyn, R. A. 
+\textit{Física Moderna}. 
+6ta Edición. Ed. Reverté, 2012. 
+(Fundamentación teórica de la energía del fotón $E=hf$ y efecto fotoeléctrico).
+
+\end{thebibliography}
+
+\end{document}
